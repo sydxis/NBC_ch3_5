@@ -1,0 +1,23 @@
+﻿Using bundled DotNet SDK version: 8.0.412 win-x64
+Running UnrealBuildTool: dotnet "..\..\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll" NBC_ch3_5Editor Win64 Development -Project=F:\UE_Project\NBC_ch3_5\NBC_ch3_5.uproject -WaitMutex
+Log file: C:\Users\k0102\AppData\Local\UnrealBuildTool\Log.txt
+Building NBC_ch3_5Editor...
+Using Visual Studio 2022 14.38.33145 toolchain (C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130) and Windows 10.0.22621.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+Warning: Visual Studio 2022 compiler is not a preferred version
+Determining max actions to execute in parallel (6 physical cores, 6 logical cores)
+  Executing up to 6 processes, one per physical core
+  Requested 1.5 GB memory per action, 326.71 MB available: limiting max parallel actions to 1
+Using Unreal Build Accelerator local executor to run 4 action(s)
+  Storage capacity 40Gb
+---- Starting trace: 260610_205333 ----
+UbaServer - Listening on 0.0.0.0:1345
+[1/4] Compile [x64] MyPawn.cpp
+[2/4] Link [x64] UnrealEditor-NBC_ch3_5-0001.dll
+[3/4] Link [x64] UnrealEditor-NBC_ch3_5-0001.lib
+[4/4] WriteMetadata NBC_ch3_5Editor.target [NoUba]
+
+Trace written to file C:/Users/k0102/AppData/Local/UnrealBuildTool/Log.uba with size 6.0kb
+Total time in Unreal Build Accelerator local executor: 29.76 seconds
+
+Result: Succeeded
+Total execution time: 33.67 seconds
