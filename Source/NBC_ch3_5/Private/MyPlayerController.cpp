@@ -18,6 +18,8 @@ AMyPlayerController::AMyPlayerController()
 	HUDWidgetInstance = nullptr;
 	MainMenuWidgetClass = nullptr;
 	MainMenuWidgetInstance = nullptr;
+	GameOverWidgetClass = nullptr;
+	GameOverWidgetInstance = nullptr;
 
 }
 
@@ -105,6 +107,67 @@ void AMyPlayerController::ShowMainMenu(bool bIsRestart)
 		}
 		
 		
+	}
+}
+
+void AMyPlayerController::ShowGameOver(bool bCleared)
+{
+	if (!GameOverWidgetClass)
+	{
+		ShowMainMenu(true);
+		return;
+	}
+
+	if (HUDWidgetInstance)
+	{
+		HUDWidgetInstance->RemoveFromParent();
+		HUDWidgetInstance = nullptr;
+	}
+
+	if (MainMenuWidgetInstance)
+	{
+		MainMenuWidgetInstance->RemoveFromParent();
+		MainMenuWidgetInstance = nullptr;
+	}
+
+	if (GameOverWidgetInstance)
+	{
+		GameOverWidgetInstance->RemoveFromParent();
+		GameOverWidgetInstance = nullptr;
+	}
+
+	GameOverWidgetInstance = CreateWidget<UUserWidget>(this, GameOverWidgetClass);
+	if (!GameOverWidgetInstance)
+	{
+		return;
+	}
+
+	GameOverWidgetInstance->AddToViewport();
+
+	bShowMouseCursor = true;
+	SetInputMode(FInputModeUIOnly());
+
+	if (UTextBlock* GameOverText = Cast<UTextBlock>(GameOverWidgetInstance->GetWidgetFromName(TEXT("GameOverText"))))
+	{
+		GameOverText->SetText(FText::FromString(bCleared ? TEXT("Game Clear!") : TEXT("Game Over")));
+	}
+
+	if (UTextBlock* ButtonText = Cast<UTextBlock>(GameOverWidgetInstance->GetWidgetFromName(TEXT("StartButtonText"))))
+	{
+		ButtonText->SetText(FText::FromString(TEXT("Restart")));
+	}
+
+	if (UTextBlock* TotalScoreText = Cast<UTextBlock>(GameOverWidgetInstance->GetWidgetFromName(TEXT("TotalScoreText"))))
+	{
+		if (UMyGameInstance* MyGameInstance = Cast<UMyGameInstance>(UGameplayStatics::GetGameInstance(this)))
+		{
+			TotalScoreText->SetText(FText::FromString(FString::Printf(TEXT("Total Score: %d"), MyGameInstance->TotalScore)));
+		}
+	}
+
+	if (UFunction* PlayAnimFunc = GameOverWidgetInstance->FindFunction(FName("PlayGameOverAnim")))
+	{
+		GameOverWidgetInstance->ProcessEvent(PlayAnimFunc, nullptr);
 	}
 }
 

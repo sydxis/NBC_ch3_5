@@ -2,7 +2,7 @@
 
 
 #include "ReverseItem.h"
-#include "MyPawn.h"
+#include "MyCharacter.h"
 
 
 // Sets default values
@@ -19,7 +19,7 @@ void AReverseItem::ActivateItem(AActor* Activator)
 	if (Activator && Activator->ActorHasTag("Player"))
 	{
 		GEngine->AddOnScreenDebugMessage(-1,2.0f,FColor::Red,FString::Printf(TEXT("Player Input Reverse")));
-		if (AMyPawn* PlayerCharacter = Cast<AMyPawn>(Activator))
+		if (AMyCharacter* PlayerCharacter = Cast<AMyCharacter>(Activator))
 		{
 			PlayerCharacter->ReverseInput();
 		}

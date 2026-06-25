@@ -15,6 +15,7 @@ public:
 	// Sets default values for this actor's properties
 	AMineItem();
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item|Component")
 	USphereComponent* ExplosionCollision;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")

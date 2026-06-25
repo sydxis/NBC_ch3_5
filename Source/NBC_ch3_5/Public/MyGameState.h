@@ -31,6 +31,18 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Level")
 	float LevelDuration;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Level|Spawn")
+	int32 BaseItemCount = 40;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Level|Spawn")
+	int32 ItemCountPerLevel = 10;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Level|Time")
+	float BaseLevelDuration = 30.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Level|Time")
+	float LevelDurationPerLevel = -5.0f;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Level")
 	int32 CurrentLevelIndex;
 
@@ -52,7 +64,7 @@ public:
 	void AddScore(int32 Amount);
 	
 	UFUNCTION(BlueprintCallable, Category = "Level")
-	void OnGameOver();
+	void OnGameOver(bool bCleared = false);
 	
 	void StartLevel();
 	void OnLevelTimeUp();

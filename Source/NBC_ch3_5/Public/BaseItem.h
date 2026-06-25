@@ -8,6 +8,8 @@
 #include "BaseItem.generated.h"
 
 class USphereComponent;
+class USoundBase;
+class UParticleSystem;
 
 UCLASS()
 class NBC_CH3_5_API ABaseItem : public AActor, public IItemInterface
@@ -52,6 +54,15 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item|Component")
 	UStaticMeshComponent* StaticMesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|FX")
+	USoundBase* PickupSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|FX")
+	UParticleSystem* PickupEffect;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|FX")
+	float EffectLifeSpan = 2.0f;
 
 public:
 	// Called every frame

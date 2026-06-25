@@ -3,7 +3,7 @@
 
 #include "HealingItem.h"
 
-#include "MyPawn.h"
+#include "MyCharacter.h"
 
 
 // Sets default values
@@ -21,7 +21,7 @@ void AHealingItem::ActivateItem(AActor* Activator)
 	if (Activator && Activator->ActorHasTag("Player"))
 	{
 		GEngine->AddOnScreenDebugMessage(-1,2.0f,FColor::Green,FString::Printf(TEXT("Player Gained %f HP"), HealAmount));
-		if (AMyPawn* PlayerCharacter = Cast<AMyPawn>(Activator))
+		if (AMyCharacter* PlayerCharacter = Cast<AMyCharacter>(Activator))
 		{
 			PlayerCharacter->AddHealth(HealAmount);
 		}

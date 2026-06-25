@@ -3,6 +3,9 @@
 
 #include "NBC_ch3_5/Public/BaseItem.h"
 #include "Components/SphereComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystemComponent.h"
+#include "TimerManager.h"
 
 
 // Sets default values
@@ -20,7 +23,9 @@ ABaseItem::ABaseItem()
 	
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
 	StaticMesh->SetupAttachment(Collision);
-	
+	// 메시가 플레이어를 막아 아이템을 못 먹는 문제 방지: 메시는 시각용, 수집 판정은 Collision 스피어가 담당
+	StaticMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 	Collision->OnComponentBeginOverlap.AddDynamic(this, &ABaseItem::OnItemStartOverlap);
 	Collision->OnComponentEndOverlap.AddDynamic(this, &ABaseItem::OnItemEndOverlap);
 	
@@ -76,5 +81,26 @@ FName ABaseItem::GetItemType() const
 
 void ABaseItem::DestroyItem()
 {
+	if (PickupSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, PickupSound, GetActorLocation());
+	}
+
+	if (PickupEffect)
+	{
+		UParticleSystemComponent* PSC = UGameplayStatics::SpawnEmitterAtLocation(this, PickupEffect, GetActorLocation(), GetActorRotation());
+
+		if (PSC && EffectLifeSpan > 0.0f)
+		{
+			FTimerHandle FxTimerHandle;
+			GetWorld()->GetTimerManager().SetTimer(
+				FxTimerHandle,
+				PSC,
+				&UParticleSystemComponent::DeactivateSystem,
+				EffectLifeSpan,
+				false);
+		}
+	}
+
 	Destroy();
 }

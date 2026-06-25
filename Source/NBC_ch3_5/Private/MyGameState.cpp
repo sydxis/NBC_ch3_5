@@ -15,7 +15,7 @@ AMyGameState::AMyGameState()
 	Score = 0;
 	SpawnedCoinCount = 0;
 	CollectedCoinCount = 0;
-	LevelDuration = 30.0f;
+	LevelDuration = 120.0f;
 	CurrentLevelIndex = 0;
 	MaxLevels = 3;
 }
@@ -79,7 +79,8 @@ void AMyGameState::StartLevel()
 		TArray<AActor*> FoundVolumes;
 		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASpawnVolume::StaticClass(), FoundVolumes);
 	
-		const int32 ItemToSpawn = 40;
+		const int32 ItemToSpawn = FMath::Max(0, BaseItemCount + CurrentLevelIndex * ItemCountPerLevel);
+		LevelDuration = FMath::Max(1.0f, BaseLevelDuration + CurrentLevelIndex * LevelDurationPerLevel);
 		
 		for (int32 i = 0; i < ItemToSpawn; i++)
 		{
@@ -114,7 +115,7 @@ void AMyGameState::StartLevel()
 
 void AMyGameState::OnLevelTimeUp()
 {
-		EndLevel();
+	OnGameOver();
 }
 
 void AMyGameState::OnCoinCollected()
@@ -148,7 +149,7 @@ void AMyGameState::EndLevel()
 
 	if (CurrentLevelIndex >= MaxLevels)
 	{
-		OnGameOver();
+		OnGameOver(true);
 		return;
 	}
 		
@@ -158,21 +159,23 @@ void AMyGameState::EndLevel()
 	}
 	else
 	{
-		OnGameOver();
+		OnGameOver(true);
 	}
 }
 
-void AMyGameState::OnGameOver()
+void AMyGameState::OnGameOver(bool bCleared)
 {
+	GetWorldTimerManager().ClearTimer(LevelTimerHandle);
+
 	if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
 	{
 		if (AMyPlayerController* MyPlayerController = Cast<AMyPlayerController>(PlayerController))
 		{
 			MyPlayerController->SetPause(true);
-			MyPlayerController->ShowMainMenu(true);
+			MyPlayerController->ShowGameOver(bCleared);
 		}
 	}
-	UE_LOG(LogTemp, Warning, TEXT("Game Over!!"));
+	UE_LOG(LogTemp, Warning, TEXT("Game Over!! (Cleared=%d)"), bCleared ? 1 : 0);
 }
 
 void AMyGameState::UpdateHUD()

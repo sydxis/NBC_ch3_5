@@ -2,7 +2,7 @@
 
 
 #include "MyGameMode.h"
-#include "MyPawn.h"
+#include "MyCharacter.h"
 #include "MyGameState.h"
 #include "MyPlayerController.h"
 
@@ -10,6 +10,6 @@
 AMyGameMode::AMyGameMode()
 {
 	PlayerControllerClass = AMyPlayerController::StaticClass();
-	DefaultPawnClass = AMyPawn::StaticClass();
+	DefaultPawnClass = AMyCharacter::StaticClass();
 	GameStateClass = AMyGameState::StaticClass();
 }

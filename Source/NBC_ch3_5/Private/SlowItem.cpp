@@ -2,7 +2,7 @@
 
 
 #include "SlowItem.h"
-#include "MyPawn.h"
+#include "MyCharacter.h"
 
 
 // Sets default values
@@ -19,7 +19,7 @@ void ASlowItem::ActivateItem(AActor* Activator)
 	if (Activator && Activator->ActorHasTag("Player"))
 	{
 		GEngine->AddOnScreenDebugMessage(-1,2.0f,FColor::Blue,FString::Printf(TEXT("Player Slowed")));
-		if (AMyPawn* PlayerCharacter = Cast<AMyPawn>(Activator))
+		if (AMyCharacter* PlayerCharacter = Cast<AMyCharacter>(Activator))
 		{
 			PlayerCharacter->GetSlow();
 		}
